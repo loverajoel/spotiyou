@@ -27,9 +27,24 @@
 						App.site.youtube.s.detail();
 					} else if (document.querySelector('.search')){
 						App.site.youtube.s.search();
+					} else if (document.querySelector('.home')){
+						App.site.youtube.s.home();
 					}
 				},
 				s : {
+					//  section home
+					home : function(){
+						var items = document.querySelectorAll('.yt-uix-shelfslider-item');
+						var items = Array.prototype.slice.call(items);
+						items.forEach(function(a){
+							var name = a.querySelector('.yt-lockup-video').getAttribute('data-context-item-title').split('(')[0].split('[')[0];
+							if(name.split('-').length > 1){
+								var name = name.split('-')[0] + '-' + name.split('-')[1];
+							}
+							var item = a.querySelector('.ux-thumb-wrap');
+							App.send.ajax({type:'track',title:name},App.site.youtube.button.pSearch,item)
+						})
+					},
 					// section detail video
 					detail : function(){
 						var name = document.getElementById('eow-title').getAttribute('title').split('(')[0].split('[')[0];
