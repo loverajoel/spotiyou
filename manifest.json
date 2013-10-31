@@ -3,7 +3,7 @@
 
   "name": "Spotiyou",
   "description": "Linking music from Youtube to Spotify",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Joel Lovera",
   "icons": { "16": "icon16.png",
            "48": "icon48.png",

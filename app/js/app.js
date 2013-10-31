@@ -53,6 +53,18 @@
 						}
 						var item = document.getElementById('watch7-action-buttons');
 						App.send.ajax({type:'track',title:name},App.site.youtube.button.pDetail,item)
+
+
+						var items = document.querySelectorAll('.related-list-item');
+						var items = Array.prototype.slice.call(items);
+						items.forEach(function(a){
+							var name = a.querySelector('.title').getAttribute('title').split('(')[0].split('[')[0];
+							if(name.split('-').length > 1){
+								var name = name.split('-')[0] + '-' + name.split('-')[1];
+							}
+							var item = a.querySelector('.ux-thumb-wrap');
+							App.send.ajax({type:'track',title:name},App.site.youtube.button.pDetailSidebar,item)
+						})
 					},
 					// section search
 					search : function(){
@@ -72,11 +84,14 @@
 								var band = document.querySelector('.watch-card-music').querySelector('.watch-card-title').firstChild.firstChild.innerHTML;
 								var items = document.querySelector('#watch-card-tab0').querySelectorAll('tr');
 								var items = Array.prototype.slice.call(items);
+								items.pop();
 								items.forEach(function(a){
-									var name = a.firstChild.getAttribute('title').split('(')[0].split('[')[0];
-									var name = band +' - '+ name;
-									var item = a.firstChild.firstChild;
-									App.send.ajax({type:'track',title:name},App.site.youtube.button.pSearchCard,item)
+									if(a.firstChild.getAttribute('title') != 'null'){
+										var name = a.firstChild.getAttribute('title').split('(')[0].split('[')[0];
+										var name = band +' - '+ name;
+										var item = a.firstChild.firstChild;
+										App.send.ajax({type:'track',title:name},App.site.youtube.button.pSearchCard,item)
+									}
 								})
 							};
 
@@ -84,6 +99,7 @@
 								var band = document.querySelector('.watch-card-music').querySelector('.watch-card-title').firstChild.firstChild.innerHTML;
 								var items = document.querySelector('#watch-card-tab1').querySelectorAll('tr');
 								var items = Array.prototype.slice.call(items);
+								items.pop();
 								items.forEach(function(a){
 									var name = a.firstChild.getAttribute('title').split('(')[0].split('[')[0];
 									var name = band +' - '+ name;
@@ -115,13 +131,26 @@
 					* @param {array}
 					* @param {object}
 					**/
+					pDetailSidebar : function(r,a){
+						if(r.info.num_results !=0 ){
+							var _btn = document.createElement('a');
+							_btn.setAttribute('class','spotify_musix_detail_sidebar');
+							_btn.href = r.tracks[0].href;
+							_btn.addEventListener("click",function(){App.track('Detail Sidebar')});
+							a.appendChild(_btn);
+						}
+					},
+					/**
+					* print button
+					* @param {array}
+					* @param {object}
+					**/
 					pSearch : function(r,a){
 						if(r.info.num_results !=0 ){
 							var _btn = document.createElement('a');
 							_btn.setAttribute('class','spotify_musix_search');
 							_btn.href = r.tracks[0].href;
 							_btn.addEventListener("click",function(){App.track('Search')});
-							console.log(a)
 							a.appendChild(_btn);
 						}
 					},
